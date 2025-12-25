@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Miner iPhone</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #3b82f6;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #475569;
+            background: #1e293b;
+            color: white;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 17px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .total-power {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⛏️ iPhone Miner App</h1>
+        
+        <div class="total-power">
+            TOPLAM GÜÇ: <span id="power">0</span> GH/s
+        </div>
+        
+        <div class="card">
+            <h3>Yeni Miner Ekle</h3>
+            <input type="text" id="minerName" placeholder="Miner Adı">
+            <input type="number" id="minerPower" placeholder="Güç (GH/s)">
+            <button onclick="addMiner()">MINER EKLE</button>
+        </div>
+        
+        <div class="card">
+            <h3>Miner Listesi</h3>
+            <div id="minerList">Henüz miner yok</div>
+        </div>
+    </div>
+
+    <script>
+        let miners = [];
+        let totalPower = 0;
+        
+        function addMiner() {
+            const name = document.getElementById('minerName').value;
+            const power = parseFloat(document.getElementById('minerPower').value);
+            
+            if (!name || !power) {
+                alert('Lütfen tüm alanları doldurun!');
+                return;
+            }
+            
+            miners.push({ name, power });
+            updateList();
+            
+            document.getElementById('minerName').value = '';
+            document.getElementById('minerPower').value = '';
+            
+            alert('✅ Miner eklendi!');
+        }
+        
+        function updateList() {
+            const listDiv = document.getElementById('minerList');
+            totalPower = 0;
+            
+            if (miners.length === 0) {
+                listDiv.innerHTML = 'Henüz miner yok';
+                return;
+            }
+            
+            let html = '';
+            miners.forEach((miner, index) => {
+                totalPower += miner.power;
+                html += `
+                    <div style="background: #334155; padding: 12px; margin: 8px 0; border-radius: 8px;">
+                        <strong>${miner.name}</strong><br>
+                        ${miner.power} GH/s
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+            document.getElementById('power').textContent = totalPower;
+        }
+    </script>
+</body>
+</html>
